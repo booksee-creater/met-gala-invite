@@ -1,0 +1,916 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Met Gala Vibe Game</title>
+    
+    <!-- Preload Images -->
+    <link rel="preload" as="image" href="https://github.com/booksee-creater/Gala/blob/main/tap%20to%20play.webp?raw=true">
+    <link rel="preload" as="image" href="https://github.com/booksee-creater/Gala/blob/main/2.png?raw=true">
+    <link rel="preload" as="image" href="https://github.com/booksee-creater/Gala/blob/main/3a_win.webp?raw=true">
+    <link rel="preload" as="image" href="https://github.com/booksee-creater/Gala/blob/main/3b_lose.webp?raw=true">
+    
+  
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+
+
+
+
+
+
+        body {
+            font-family: 'Playfair Display', Georgia, serif;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+
+
+
+
+
+
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+
+
+
+
+
+
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+
+
+
+
+
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+
+
+
+
+
+
+        /* Screen 1: Landing */
+        #screen1 {
+            background-image: url('https://github.com/booksee-creater/Gala/blob/main/tap%20to%20play.webp?raw=true');
+        }
+
+
+
+
+
+
+
+
+       /* Invisible clickable overlay for the button in the image */
+.tap-overlay {
+    position: absolute;
+    bottom: 16%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 145px;
+    height: 55px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+
+
+
+.tap-overlay:hover {
+    transform: translateX(-50%) scale(1.05);
+}
+
+
+
+
+.tap-overlay:active {
+    transform: translateX(-50%) scale(0.98);
+}
+
+
+
+
+/* CONFETTI CANNON EFFECT */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+}
+
+
+/* Different confetti shapes and colors */
+.confetti-piece.square {
+    background: #FFD700;
+}
+
+
+.confetti-piece.circle {
+    background: #FFF;
+    border-radius: 50%;
+}
+
+
+.confetti-piece.rectangle {
+    width: 8px;
+    height: 14px;
+    background: #C0C0C0;
+}
+
+
+.confetti-piece.gold {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+}
+
+
+.confetti-piece.white {
+    background: #FFFFFF;
+}
+
+
+/* Cannon launch animation - shoots from sides with arc */
+@keyframes cannonLeft {
+    0% {
+        left: -20px;
+        bottom: 30%;
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+        left: var(--end-x);
+        bottom: var(--end-y);
+        opacity: 0;
+        transform: translate(0, 0) rotate(720deg);
+    }
+}
+
+
+@keyframes cannonRight {
+    0% {
+        right: -20px;
+        bottom: 30%;
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+        right: var(--end-x);
+        bottom: var(--end-y);
+        opacity: 0;
+        transform: translate(0, 0) rotate(-720deg);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Screen 2: Choose 3 */
+        #screen2 {
+            background: none;
+            padding: 0;
+            position: relative;
+        }
+
+
+
+
+
+
+
+
+        .title {
+            display: none;
+        }
+
+
+
+
+
+
+
+
+        .grid-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
+
+
+
+
+
+
+        .grid-background {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+
+
+
+
+
+
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0;
+        }
+
+
+
+
+
+
+
+
+        .grid-item {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+
+
+
+
+
+
+
+        .grid-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+
+
+
+
+
+
+
+        .grid-item:hover::before {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+
+
+
+
+
+
+
+        .grid-item.selected::before {
+            background: transparent;
+            border: none;
+        }
+
+
+
+
+
+
+
+
+        .grid-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            color: #FFD700;
+            text-shadow: 
+                0 0 20px rgba(255, 215, 0, 0.8),
+                0 0 40px rgba(255, 215, 0, 0.6),
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            z-index: 2;
+            animation: checkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+
+
+
+
+
+
+
+        @keyframes checkPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+
+
+
+
+
+
+
+        .continue-btn {
+            display: none;
+            margin: 30px auto;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid #FFD700;
+            color: #FFD700;
+            font-size: 1.3rem;
+            padding: 15px 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+
+
+
+
+
+        .continue-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+
+
+
+
+
+
+
+        .continue-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+
+
+
+
+
+
+
+        .continue-btn.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+
+
+
+
+
+
+
+        .continue-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.35), rgba(255, 255, 255, 0.1));
+            box-shadow: 
+                0 12px 48px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                0 0 60px rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+        }
+
+
+
+
+
+
+
+
+        .continue-btn:active {
+            transform: scale(0.98);
+        }
+
+
+
+
+
+
+
+
+        /* Screen 3: Result */
+        #screen3 {
+            position: relative;
+        }
+
+
+
+
+
+
+
+
+        #screen3.win {
+            background-image: url('https://github.com/booksee-creater/Gala/blob/main/3a_win.webp?raw=true');
+        }
+
+
+
+
+
+
+
+
+        #screen3.lose {
+            background-image: url('https://github.com/booksee-creater/Gala/blob/main/3b_lose.webp?raw=true');
+        }
+
+
+
+
+
+
+
+
+        .result-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 2rem;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            max-width: 80%;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease-in;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+
+
+
+
+
+
+
+        /* Invisible replay overlay for screen 3 */
+        .replay-overlay {
+            position: absolute;
+            bottom: 16%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 145px;
+            height: 55px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+
+        .replay-overlay:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+
+        .replay-overlay:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+
+
+
+
+
+
+
+       
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8rem;
+                margin-top: 20px;
+            }
+
+
+
+
+
+
+
+
+            .tap-overlay {
+                width: 145px;
+                height: 60px;
+                bottom: 16%;
+            }
+
+
+
+
+
+
+
+
+            .result-message {
+                font-size: 1.5rem;
+                padding: 20px;
+            }
+
+
+
+
+
+
+
+
+            .replay-btn, .continue-btn {
+                font-size: 1.1rem;
+                padding: 12px 30px;
+            }
+
+
+
+
+
+
+
+
+            .grid {
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+   <!-- Preload Audio -->
+<audio id="screen1Sound" preload="auto">
+    <source src="https://files.catbox.moe/9y3d71.wav" type="audio/wav">
+</audio>
+<audio id="winSound" preload="auto">
+    <source src="https://files.catbox.moe/1da75s.mp3" type="audio/mpeg">
+</audio>
+<audio id="loseSound" preload="auto">
+    <source src="https://files.catbox.moe/7pn7xg.mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+
+
+
+
+
+
+
+    <!-- Screen 1: Landing -->
+    <div id="screen1" class="screen active">
+        <div class="tap-overlay" onclick="goToScreen2()"></div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Screen 2: Choose 3 -->
+    <div id="screen2" class="screen">
+        <h1 class="title">Choose Any 3</h1>
+        <div class="grid-container">
+            <img src="https://github.com/booksee-creater/Gala/blob/main/2.png?raw=true" alt="Grid" class="grid-background">
+            <div class="grid-overlay">
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+                <div class="grid-item" onclick="selectItem(this)"></div>
+            </div>
+        </div>
+        <button class="continue-btn" onclick="showResult()">Continue</button>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Screen 3: Result -->
+    <div id="screen3" class="screen">
+        <div class="result-message" id="resultMessage"></div>
+        <div class="replay-overlay" onclick="replay()"></div>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+        let selectedCount = 0;
+
+
+
+
+
+
+
+
+      function goToScreen2() {
+    // Play screen 1 sound
+    document.getElementById('screen1Sound').play();
+    
+    document.getElementById('screen1').classList.remove('active');
+    document.getElementById('screen2').classList.add('active');
+}
+
+
+
+
+
+
+
+
+        function selectItem(item) {
+            if (item.classList.contains('selected')) {
+                // Deselect
+                item.classList.remove('selected');
+                selectedCount--;
+            } else {
+                // Select only if less than 3
+                if (selectedCount < 3) {
+                    item.classList.add('selected');
+                    selectedCount++;
+                } else {
+                    // Don't allow more than 3 selections
+                    return;
+                }
+            }
+
+
+
+
+
+
+
+
+            // Auto-transition when exactly 3 are selected
+            if (selectedCount === 3) {
+                // Disable all items to prevent further clicks
+                document.querySelectorAll('.grid-item').forEach(gridItem => {
+                    if (!gridItem.classList.contains('selected')) {
+                        gridItem.style.pointerEvents = 'none';
+                    }
+                });
+                
+                setTimeout(() => {
+                    showResult();
+                }, 800); // Small delay for visual feedback
+            }
+        }
+
+
+
+
+
+
+
+
+        function showResult() {
+            // Random outcome: 24% win, 76% lose
+            const isWin = Math.random() < 0.24;
+            
+            const screen3 = document.getElementById('screen3');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            // Hide screen 2
+            document.getElementById('screen2').classList.remove('active');
+            
+            if (isWin) {
+                screen3.classList.add('win');
+                screen3.classList.remove('lose');
+                resultMessage.textContent = 'Congratulations, You are going to the Gala.';
+                document.getElementById('winSound').play();
+                
+                // TRIGGER CONFETTI CANNONS!
+                fireConfettiCannons();
+            } else {
+                screen3.classList.add('lose');
+                screen3.classList.remove('win');
+                resultMessage.textContent = 'Sorry, not this time.';
+                document.getElementById('loseSound').play();
+            }
+            
+            // Show screen 3
+            screen3.classList.add('active');
+        }
+
+
+
+
+
+
+
+
+        function replay() {
+            // Stop any playing audio
+            document.getElementById('winSound').pause();
+            document.getElementById('winSound').currentTime = 0;
+            document.getElementById('loseSound').pause();
+            document.getElementById('loseSound').currentTime = 0;
+            
+            // Clear confetti
+            document.getElementById('confettiContainer').innerHTML = '';
+            
+            // Reset selection
+            selectedCount = 0;
+            document.querySelectorAll('.grid-item').forEach(item => {
+                item.classList.remove('selected');
+                item.style.pointerEvents = 'auto'; // Re-enable clicks
+            });
+            document.querySelector('.continue-btn').classList.remove('show');
+            
+            // Go back to screen 1
+            document.getElementById('screen3').classList.remove('active');
+            document.getElementById('screen1').classList.add('active');
+        }
+
+
+
+
+        // CONFETTI CANNON FUNCTION
+        function fireConfettiCannons() {
+            const container = document.getElementById('confettiContainer');
+            container.innerHTML = ''; // Clear any previous confetti
+            
+            const colors = ['square gold', 'circle white', 'rectangle', 'square white', 'circle gold'];
+            const confettiCount = 60; // 30 from each side
+            
+            // Fire from LEFT cannon
+            for (let i = 0; i < confettiCount / 2; i++) {
+                setTimeout(() => {
+                    createConfettiFromLeft(container, colors);
+                }, i * 30); // Stagger the launch
+            }
+            
+            // Fire from RIGHT cannon
+            for (let i = 0; i < confettiCount / 2; i++) {
+                setTimeout(() => {
+                    createConfettiFromRight(container, colors);
+                }, i * 30); // Stagger the launch
+            }
+            
+            // Clean up after animation
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+
+        function createConfettiFromLeft(container, colors) {
+            const confetti = document.createElement('div');
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.className = `confetti-piece ${randomColor}`;
+            
+            // Random end position (shoots across and up in an arc)
+            const endX = 40 + Math.random() * 60; // 40-100% across screen
+            const endY = -100 - Math.random() * 400; // Falls down after arc
+            const duration = 2 + Math.random() * 1.5; // 2-3.5 seconds
+            
+            confetti.style.setProperty('--end-x', `${endX}vw`);
+            confetti.style.setProperty('--end-y', `${endY}px`);
+            confetti.style.animation = `cannonLeft ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+            
+            container.appendChild(confetti);
+            
+            // Remove after animation
+            setTimeout(() => confetti.remove(), duration * 1000);
+        }
+
+
+        function createConfettiFromRight(container, colors) {
+            const confetti = document.createElement('div');
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.className = `confetti-piece ${randomColor}`;
+            
+            // Random end position (shoots across and up in an arc)
+            const endX = 40 + Math.random() * 60; // 40-100% across screen  
+            const endY = -100 - Math.random() * 400; // Falls down after arc
+            const duration = 2 + Math.random() * 1.5; // 2-3.5 seconds
+            
+            confetti.style.setProperty('--end-x', `${endX}vw`);
+            confetti.style.setProperty('--end-y', `${endY}px`);
+            confetti.style.animation = `cannonRight ${duration}s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards`;
+            
+            container.appendChild(confetti);
+            
+            // Remove after animation
+            setTimeout(() => confetti.remove(), duration * 1000);
+        }
+
+
+           </script>
+</body>
+</html>
