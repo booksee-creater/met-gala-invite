@@ -1,4 +1,3 @@
-<img width="400" height="737" alt="met-gala-game" src="https://github.com/user-attachments/assets/52778964-015e-4906-a5c1-84f0af2b98b1" />
 # met-gala-invite
 Interactive Met Gala grid game where Anna will see if you get the invitation or not. Play instantly.
 
@@ -7,7 +6,7 @@ Pick 3 looks. Find out if you're getting invited to the Met Gala.
 🔗 Play now: [https://your-link-here](https://booksee-creater.github.io/met-gala-invite/)
 
 
-![Demo]([https://raw.githubusercontent.com/booksee-creater/Gala/refs/heads/main/met-gala-game.gif)]
+![Demo<img width="400" height="737" alt="met-gala-game" src="https://github.com/user-attachments/assets/52778964-015e-4906-a5c1-84f0af2b98b1" />
 
 ## Why you may play the mini game
 - 🎭 See if you can get invited through Anna at Met Gala this year
