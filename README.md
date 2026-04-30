@@ -22,5 +22,6 @@ Pick 3 looks. Find out if you're getting invited to the Met Gala.
 
 
 ## Screenshots
-![Screen 1]([https://github.com/booksee-creater/Gala/blob/main/3a_win.webp?raw=true](https://i.pinimg.com/736x/b0/d6/e8/b0d6e874ed60e866c651f89599af5d31.jpg))
-![Result Screen]([image2.png](https://github.com/booksee-creater/Gala/blob/main/3b_lose.webp?raw=true))
+![Screen 1]([<img width="1080" height="1920" alt="tap to play" src="https://github.com/user-attachments/assets/6043fb27-6f9d-46a3-9419-b3280867d037" />
+))
+![Result Screen]([<img width="1080" height="1920" alt="alt 3" src="https://github.com/user-attachments/assets/9e8e47b2-457d-424e-b68b-32a9761b7aac" />))
