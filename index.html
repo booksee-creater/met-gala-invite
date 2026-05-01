@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,10 +22,6 @@
 
 
 
-
-
-
-
         body {
             font-family: 'Playfair Display', Georgia, serif;
             background: #000;
@@ -33,10 +29,6 @@
             height: 100vh;
             width: 100vw;
         }
-
-
-
-
 
 
 
@@ -56,10 +48,6 @@
 
 
 
-
-
-
-
         .screen.active {
             display: flex;
             flex-direction: column;
@@ -67,10 +55,6 @@
             justify-content: flex-start;
             animation: fadeIn 0.5s ease-in;
         }
-
-
-
-
 
 
 
@@ -83,18 +67,10 @@
 
 
 
-
-
-
-
         /* Screen 1: Landing */
         #screen1 {
             background-image: url('https://github.com/booksee-creater/Gala/blob/main/tap%20to%20play.webp?raw=true');
         }
-
-
-
-
 
 
 
@@ -112,20 +88,14 @@
 }
 
 
-
-
 .tap-overlay:hover {
     transform: translateX(-50%) scale(1.05);
 }
 
 
-
-
 .tap-overlay:active {
     transform: translateX(-50%) scale(0.98);
 }
-
-
 
 
 /* CONFETTI CANNON EFFECT */
@@ -140,7 +110,6 @@
     overflow: hidden;
 }
 
-
 .confetti-piece {
     position: absolute;
     width: 10px;
@@ -148,18 +117,15 @@
     opacity: 0;
 }
 
-
 /* Different confetti shapes and colors */
 .confetti-piece.square {
     background: #FFD700;
 }
 
-
 .confetti-piece.circle {
     background: #FFF;
     border-radius: 50%;
 }
-
 
 .confetti-piece.rectangle {
     width: 8px;
@@ -167,16 +133,13 @@
     background: #C0C0C0;
 }
 
-
 .confetti-piece.gold {
     background: linear-gradient(135deg, #FFD700, #FFA500);
 }
 
-
 .confetti-piece.white {
     background: #FFFFFF;
 }
-
 
 /* Cannon launch animation - shoots from sides with arc */
 @keyframes cannonLeft {
@@ -193,7 +156,6 @@
         transform: translate(0, 0) rotate(720deg);
     }
 }
-
 
 @keyframes cannonRight {
     0% {
@@ -215,12 +177,6 @@
 
 
 
-
-
-
-
-
-
         /* Screen 2: Choose 3 */
         #screen2 {
             background: none;
@@ -231,17 +187,9 @@
 
 
 
-
-
-
-
         .title {
             display: none;
         }
-
-
-
-
 
 
 
@@ -257,20 +205,12 @@
 
 
 
-
-
-
-
         .grid-background {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-
-
-
-
 
 
 
@@ -290,19 +230,11 @@
 
 
 
-
-
-
-
         .grid-item {
             position: relative;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-
-
-
 
 
 
@@ -323,17 +255,9 @@
 
 
 
-
-
-
-
         .grid-item:hover::before {
             background: rgba(255, 215, 0, 0.05);
         }
-
-
-
-
 
 
 
@@ -342,10 +266,6 @@
             background: transparent;
             border: none;
         }
-
-
-
-
 
 
 
@@ -369,19 +289,11 @@
 
 
 
-
-
-
-
         @keyframes checkPop {
             0% { transform: translate(-50%, -50%) scale(0); }
             50% { transform: translate(-50%, -50%) scale(1.2); }
             100% { transform: translate(-50%, -50%) scale(1); }
         }
-
-
-
-
 
 
 
@@ -411,10 +323,6 @@
 
 
 
-
-
-
-
         .continue-btn::before {
             content: '';
             position: absolute;
@@ -431,10 +339,6 @@
 
 
 
-
-
-
-
         .continue-btn:hover::before {
             width: 300px;
             height: 300px;
@@ -443,18 +347,10 @@
 
 
 
-
-
-
-
         .continue-btn.show {
             display: block;
             animation: fadeIn 0.3s ease-in;
         }
-
-
-
-
 
 
 
@@ -471,17 +367,9 @@
 
 
 
-
-
-
-
         .continue-btn:active {
             transform: scale(0.98);
         }
-
-
-
-
 
 
 
@@ -494,10 +382,6 @@
 
 
 
-
-
-
-
         #screen3.win {
             background-image: url('https://github.com/booksee-creater/Gala/blob/main/3a_win.webp?raw=true');
         }
@@ -505,17 +389,9 @@
 
 
 
-
-
-
-
         #screen3.lose {
             background-image: url('https://github.com/booksee-creater/Gala/blob/main/3b_lose.webp?raw=true');
         }
-
-
-
-
 
 
 
@@ -541,10 +417,6 @@
 
 
 
-
-
-
-
         /* Invisible replay overlay for screen 3 */
         .replay-overlay {
             position: absolute;
@@ -557,19 +429,13 @@
             transition: transform 0.2s;
         }
 
-
         .replay-overlay:hover {
             transform: translateX(-50%) scale(1.05);
         }
 
-
         .replay-overlay:active {
             transform: translateX(-50%) scale(0.98);
         }
-
-
-
-
 
 
 
@@ -585,19 +451,11 @@
 
 
 
-
-
-
-
             .tap-overlay {
                 width: 145px;
                 height: 60px;
                 bottom: 16%;
             }
-
-
-
-
 
 
 
@@ -610,18 +468,10 @@
 
 
 
-
-
-
-
             .replay-btn, .continue-btn {
                 font-size: 1.1rem;
                 padding: 12px 30px;
             }
-
-
-
-
 
 
 
@@ -645,13 +495,8 @@
     <source src="https://files.catbox.moe/7pn7xg.mp3" type="audio/mpeg">
 </audio>
 
-
 <!-- Confetti container -->
 <div class="confetti-container" id="confettiContainer"></div>
-
-
-
-
 
 
 
@@ -660,10 +505,6 @@
     <div id="screen1" class="screen active">
         <div class="tap-overlay" onclick="goToScreen2()"></div>
     </div>
-
-
-
-
 
 
 
@@ -691,19 +532,11 @@
 
 
 
-
-
-
-
     <!-- Screen 3: Result -->
     <div id="screen3" class="screen">
         <div class="result-message" id="resultMessage"></div>
         <div class="replay-overlay" onclick="replay()"></div>
     </div>
-
-
-
-
 
 
 
@@ -714,21 +547,19 @@
 
 
 
-
-
-
-
       function goToScreen2() {
     // Play screen 1 sound
     document.getElementById('screen1Sound').play();
     
-    document.getElementById('screen1').classList.remove('active');
-    document.getElementById('screen2').classList.add('active');
+    // TRIGGER CONFETTI CANNONS on screen 1!
+    fireConfettiCannons();
+    
+    // Transition to screen 2 after short delay
+    setTimeout(() => {
+        document.getElementById('screen1').classList.remove('active');
+        document.getElementById('screen2').classList.add('active');
+    }, 500);
 }
-
-
-
-
 
 
 
@@ -752,10 +583,6 @@
 
 
 
-
-
-
-
             // Auto-transition when exactly 3 are selected
             if (selectedCount === 3) {
                 // Disable all items to prevent further clicks
@@ -770,10 +597,6 @@
                 }, 800); // Small delay for visual feedback
             }
         }
-
-
-
-
 
 
 
@@ -810,10 +633,6 @@
 
 
 
-
-
-
-
         function replay() {
             // Stop any playing audio
             document.getElementById('winSound').pause();
@@ -836,8 +655,6 @@
             document.getElementById('screen3').classList.remove('active');
             document.getElementById('screen1').classList.add('active');
         }
-
-
 
 
         // CONFETTI CANNON FUNCTION
@@ -868,7 +685,6 @@
             }, 4000);
         }
 
-
         function createConfettiFromLeft(container, colors) {
             const confetti = document.createElement('div');
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -889,7 +705,6 @@
             setTimeout(() => confetti.remove(), duration * 1000);
         }
 
-
         function createConfettiFromRight(container, colors) {
             const confetti = document.createElement('div');
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -909,7 +724,6 @@
             // Remove after animation
             setTimeout(() => confetti.remove(), duration * 1000);
         }
-
 
            </script>
 </body>
